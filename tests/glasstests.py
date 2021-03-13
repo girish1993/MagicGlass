@@ -50,6 +50,42 @@ class GlassTests(unittest.TestCase):
         glass.reset()
         self.assertEqual(glass.get_filled_water(), 0)
 
+    def test_is_valid_row_and_column(self):
+        """
+        Test to check the is_valid_row_and_column method when column is greater than row
+        :return: None
+        :rtype:None
+        """
+        glass = self.set_up_glass_instance(0, 2, True, 250, 200)
+        self.assertFalse(glass.is_valid_row_and_column())
+
+    def test_is_valid_row_and_column_when_numbers_are_negative(self):
+        """
+        Test to check the is_valid_row_and_column method when column is greater than row
+        :return: None
+        :rtype:None
+        """
+        glass = self.set_up_glass_instance(0, -2, True, 250, 200)
+        self.assertFalse(glass.is_valid_row_and_column())
+
+    def test_is_valid_row_and_column_when_numbers_are_correct(self):
+        """
+        Test to check the is_valid_row_and_column method when row and column numbers are well within the range
+        :return: None
+        :rtype:None
+        """
+        glass = self.set_up_glass_instance(9, 3, True, 250, 200)
+        self.assertTrue(glass.is_valid_row_and_column())
+
+    def test_is_valid_row_and_column_when_rownumber_is_beyond_limit(self):
+        """
+        Test to check the is_valid_row_and_column method when row number is beyond a certain limit
+        :return: None
+        :rtype:None
+        """
+        glass = self.set_up_glass_instance(13, 3, True, 250, 200)
+        self.assertFalse(glass.is_valid_row_and_column())
+
     def test_fill_water_when_volume_more_than_capacity(self):
         """
         Fill water should update the filled water value prop when the volume poured is less than volume
