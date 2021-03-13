@@ -40,8 +40,28 @@ class Glass(AbstractGlass):
     def set_filled_water(self, filled_water):
         self._filled_water = filled_water
 
+    def is_valid_row_and_column(self):
+        """
+        Method to check the validity of the row and column values.
+        Here we are assuming that the maximum number of rows will be be 10.
+        :return: is_valid
+        :rtype: bool
+        """
+        is_valid = True
+        if self.get_row() < 0 or self.get_row() > 10 or self.get_column() < 0 or self.get_column() > self.get_row():
+            is_valid = False
+        return is_valid
+
     def reset(self):
-        pass
+        """
+        To reset the glass to empty and setting the flag to False. This method sets the state of glass to the defaults
+        for the next set of pouring.
+        :return: None
+        :rtype: None
+        """
+        if self.is_valid_row_and_column():
+            self.set_is_full(False)
+            self.set_filled_water(0)
 
     def fill_water(self):
         pass

@@ -1,9 +1,34 @@
 from __future__ import annotations
 import unittest
-from entity import *
+from entity.glass import Glass
 
 
 class GlassTests(unittest.TestCase):
+
+    @staticmethod
+    def set_up_glass_instance(row, column, is_full, capacity, filled_water):
+        """
+        Static setup method to setup the glass instance
+        :param row: number indicating the position of the glass
+        :type row: int
+        :param column: number indicating the column of glass
+        :type column: int
+        :param is_full: flag indicating the level of water filled in the glass
+        :type is_full: bool
+        :param capacity: number to indicate the capacity of the glass(in ml)
+        :type capacity: int
+        :param filled_water: number indicating the volume (in ml) of water filled in the glass
+        :type filled_water: int
+        :return: glass
+        :rtype: Glass
+        """
+        glass = Glass()
+        glass.set_row(row)
+        glass.set_column(column)
+        glass.set_capacity(capacity)
+        glass.set_filled_water(filled_water)
+        glass.set_is_full(is_full)
+        return glass
 
     def test_reset_is_full(self):
         """
@@ -11,7 +36,7 @@ class GlassTests(unittest.TestCase):
         :return: None
         :rtype: None
         """
-        glass = Glass()
+        glass = self.set_up_glass_instance(0, 0, True, 250, 200)
         glass.reset()
         self.assertFalse(glass.get_is_full())
 
@@ -21,9 +46,9 @@ class GlassTests(unittest.TestCase):
         :return: None
         :rtype: None
         """
-        glass = Glass()
+        glass = self.set_up_glass_instance(0, 0, True, 250, 200)
         glass.reset()
-        self.assertEqual(glass.get_filled_water_level(), 0)
+        self.assertEqual(glass.get_filled_water(), 0)
 
     def test_fill_water_when_volume_more_than_capacity(self):
         """
