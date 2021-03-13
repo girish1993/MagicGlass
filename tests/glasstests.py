@@ -77,7 +77,7 @@ class GlassTests(unittest.TestCase):
         glass = self.set_up_glass_instance(9, 3, True, 250, 200)
         self.assertTrue(glass.is_valid_row_and_column())
 
-    def test_is_valid_row_and_column_when_rownumber_is_beyond_limit(self):
+    def test_is_valid_row_and_column_when_row_number_is_beyond_limit(self):
         """
         Test to check the is_valid_row_and_column method when row number is beyond a certain limit
         :return: None
@@ -92,16 +92,10 @@ class GlassTests(unittest.TestCase):
         :return: None
         :rtype: None
         """
-        row = 0
-        column = 0
-        is_full = False
-        capacity = 250
-        filled_water = 0
         water_pour_volume = 200
-
-        glass = Glass(row, column, is_full, capacity, filled_water)
+        glass = self.set_up_glass_instance(0, 0, False, 250, 0)
         glass.fill_water(water_pour_volume)
-        self.assertEqual(glass.get_filled_water_level(), 200)
+        self.assertEqual(glass.get_filled_water(), 200)
         self.assertFalse(glass.get_is_full())
 
     def test_fill_water_when_capacity_is_negative(self):
@@ -110,15 +104,9 @@ class GlassTests(unittest.TestCase):
         :return: None
         :rtype: None
         """
-        row = 0
-        column = 0
-        is_full = False
-        capacity = 0
-        filled_water = 0
-        water_pour_volume = 200
-
-        glass = Glass(row, column, is_full, capacity, filled_water)
-        self.assertEqual(glass.fill_water(water_pour_volume), "The capacity of the glass cannot be 0 or negative")
+        glass = self.set_up_glass_instance(0, 0, False, 250, 200)
+        self.assertEqual(glass.get_filled_water()(water_pour_volume),
+                         "The capacity of the glass cannot be 0 or negative")
 
     def test_fill_water_when_row_column_are_negative(self):
         """

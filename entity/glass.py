@@ -1,4 +1,5 @@
 from interfaces.abstractGlass import AbstractGlass
+import logging as LOGGER
 
 
 class Glass(AbstractGlass):
@@ -49,6 +50,7 @@ class Glass(AbstractGlass):
         """
         is_valid = True
         if self.get_row() < 0 or self.get_row() > 10 or self.get_column() < 0 or self.get_column() > self.get_row():
+            LOGGER.error("Row or Columns cannot be negative")
             is_valid = False
         return is_valid
 
@@ -63,5 +65,12 @@ class Glass(AbstractGlass):
             self.set_is_full(False)
             self.set_filled_water(0)
 
-    def fill_water(self):
-        pass
+    def fill_water(self, water_volume):
+        if water_volume < 0:
+            LOGGER.error("Poured volume cannot be negative")
+            raise ValueError("Poured Volume cannot be negative")
+        elif water_volume > self.get_capacity():
+            self.set_filled_water(self.get_capacity())
+            self.set_is_full(True)
+        else:
+            self.set_filled_water(water_volume)
