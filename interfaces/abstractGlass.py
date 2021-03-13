@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 class AbstractGlass(ABC):
 
     @abstractmethod
-    def fill_water(self):
+    def fill_water(self, water_volume):
         pass
 
     @abstractmethod
