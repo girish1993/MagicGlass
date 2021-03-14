@@ -1,7 +1,6 @@
 from __future__ import annotations
 import unittest
-from entity.glass import Glass
-from entity import *
+from entity.glassFactory import GlassFactory
 
 
 class GlassFactoryTests(unittest.TestCase):
@@ -9,17 +8,27 @@ class GlassFactoryTests(unittest.TestCase):
     def test_can_setup_when_row_is_negative(self):
         rows = -10
         glass_factory = GlassFactory()
-        self.assertFalse(glass_factory.can_setup(rows))
+        glass_factory.set_rows(rows)
+        self.assertFalse(glass_factory.can_setup())
 
     def test_can_setup_when_row_is_beyond_permissible_number(self):
         rows = 12
         glass_factory = GlassFactory()
-        self.assertFalse(glass_factory.can_setup(rows))
+        glass_factory.set_rows(rows)
+        self.assertFalse(glass_factory.can_setup())
 
     def test_can_setup_with_correct_numbers(self):
         rows = 6
         glass_factory = GlassFactory()
-        self.assertTrue(glass_factory.can_setup(rows))
+        glass_factory.set_rows(rows)
+        self.assertTrue(glass_factory.can_setup())
+
+    def test_can_setup_when_provided_with_incorrect_type(self):
+        rows = "random"
+        glass_factory = GlassFactory()
+        glass_factory.set_rows(rows)
+        with self.assertRaises(TypeError):
+            glass_factory.can_setup()
 
     def test_setup_glass_stack_returns_the_correct_number_of_glasses(self):
         rows = 6
