@@ -66,9 +66,9 @@ class Glass(AbstractGlass):
             self.set_filled_water(0)
 
     def fill_water(self, water_volume):
-        if water_volume < 0:
-            LOGGER.error("Poured volume cannot be negative")
-            raise ValueError("Poured Volume cannot be negative")
+        if water_volume <= 0:
+            LOGGER.error("Poured volume cannot be negative or zero")
+            raise ValueError("Poured Volume cannot be negative or zero")
         elif water_volume > self.get_capacity():
             self.set_filled_water(self.get_capacity())
             self.set_is_full(True)

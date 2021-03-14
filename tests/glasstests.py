@@ -98,28 +98,25 @@ class GlassTests(unittest.TestCase):
         self.assertEqual(glass.get_filled_water(), 200)
         self.assertFalse(glass.get_is_full())
 
-    def test_fill_water_when_capacity_is_negative(self):
+    def test_fill_water_when_volume_is_more_than_capacity(self):
         """
-        Fill water method that should return error message when volume poured is more than the capacity
+        Fill water value should be set to the capacity when the value of poured volume is more than the capacity
         :return: None
         :rtype: None
         """
-        glass = self.set_up_glass_instance(0, 0, False, 250, 200)
-        self.assertEqual(glass.get_filled_water()(water_pour_volume),
-                         "The capacity of the glass cannot be 0 or negative")
+        water_pour_volume = 300
+        glass = self.set_up_glass_instance(0, 0, False, 250, 0)
+        glass.fill_water(water_pour_volume)
+        self.assertEqual(glass.get_filled_water(), 250)
+        self.assertTrue(glass.get_is_full())
 
-    def test_fill_water_when_row_column_are_negative(self):
+    def test_fill_water_when_volume_is_negative(self):
         """
-        Fill water method that should return error message when the row and column numbers are negative
+        Fill water method should raise a value exception when the poured volume is negative or zero
         :return: None
         :rtype: None
         """
-        row = -20
-        column = -30
-        is_full = False
-        capacity = 0
-        filled_water = 0
-        water_pour_volume = 200
-
-        glass = Glass(row, column, is_full, capacity, filled_water)
-        self.assertEqual(glass.fill_water(water_pour_volume), "The row and column numbers cannot be less than 0")
+        water_pour_volume = -10
+        glass = self.set_up_glass_instance(0, 0, False, 250, 0)
+        with self.assertRaises(ValueError):
+            glass.fill_water(water_pour_volume)
