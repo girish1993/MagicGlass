@@ -53,14 +53,20 @@ class GlassFactoryTests(unittest.TestCase):
             glass_factory.setup_glass_stack()
 
     def test_pour_water_with_negative_volume_returns_error(self):
+        rows = 5
         poured_volume = -10
         glass_factory = GlassFactory()
+        glass_factory.set_rows(rows)
+        glass_factory.setup_glass_stack()
         with self.assertRaises(ValueError):
             glass_factory.pour_water(poured_volume)
 
     def test_pour_water_with_some_arbitrary_positive_value(self):
+        rows = 5
         poured_volume = 20
         glass_factory = GlassFactory()
+        glass_factory.set_rows(rows)
+        glass_factory.setup_glass_stack()
         with self.assertLogs('root', level="INFO") as cm:
             glass_factory.pour_water(poured_volume)
         self.assertIn("DEBUG:root:Water of volume {} poured".format(poured_volume), cm.output)

@@ -5,6 +5,13 @@ from entity.glass import Glass
 
 class GlassFactory(AbstractGlassFactory):
 
+    @staticmethod
+    def is_pour_water_valid(poured_water):
+        if poured_water <= 0:
+            LOGGER.error("Poured Water cannot be negative or 0")
+            return False
+        return True
+
     def __init__(self):
         self._rows = 0
         self._poured_water = 0
@@ -46,7 +53,7 @@ class GlassFactory(AbstractGlassFactory):
             if self.can_setup():
                 rows = self.get_rows()
                 for i in range(rows):
-                    for j in range(0, i+1):
+                    for j in range(0, i + 1):
                         glass = Glass()
                         glass.set_row(i)
                         glass.set_column(j)
@@ -59,8 +66,38 @@ class GlassFactory(AbstractGlassFactory):
         except TypeError as e:
             raise TypeError(e)
 
-    def pour_water(self):
-        pass
+    def pour_water(self, poured_water):
+        try:
+            if len(self.get_all_glasses()):
+                if self.is_pour_water_valid(poured_water):
+                    all_glasses = self.get_all_glasses()
+                    index = 0
+                    capacity = all_glasses[index].get_capacity()
+                    all_glasses[index].set_filled_water(poured_water)
+                    # Traversing through the stack from 2 row onwards
+                    for row in range(1, self.get_rows()):
+                        for col in range(1, row + 1):
+                            remaining_water = all_glasses[index].get_filled_water()
+                            while remaining_water != 0.0:
+                                all_glasses[index].fill_water(remaining_water)
+                                if remaining_water >= capacity:
+                                    remaining_water -= capacity
+                                else:
+                                    remaining_water = 0.0
 
+                                left_water_value = all_glasses[index + row].get_filled_water() + (remaining_water / 2)
+                                right_water_value = all_glasses[index + row + 1].get_filled_water() + (remaining_water / 2)
+
+                                all_glasses[index + row].set_filled_water(left_water_value)
+                                all_glasses[index + row + 1].set_filled_water(right_water_value)
+                                index += 1
+
+                    LOGGER.info("Water of volume {} poured".format(poured_water))
+                else:
+                    raise ValueError("Poured water value cannot be negative")
+            else:
+                raise Exception("Cannot pour water when the stack hasn't been setup.")
+        except ValueError as v:
+            raise ValueError(v)
     def find_water_in_glass(self):
         pass
