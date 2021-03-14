@@ -1,5 +1,6 @@
 import logging as LOGGER
 from interfaces.abstractGlassFactory import AbstractGlassFactory
+from entity.glass import Glass
 
 
 class GlassFactory(AbstractGlassFactory):
@@ -24,6 +25,9 @@ class GlassFactory(AbstractGlassFactory):
     def get_all_glasses(self):
         return self._all_glasses
 
+    def put_glass(self, glass):
+        self._all_glasses.append(glass)
+
     def can_setup(self):
         can_setup = True
         try:
@@ -38,7 +42,22 @@ class GlassFactory(AbstractGlassFactory):
             raise TypeError(e)
 
     def setup_glass_stack(self):
-        pass
+        try:
+            if self.can_setup():
+                rows = self.get_rows()
+                for i in range(rows):
+                    for j in range(0, i+1):
+                        glass = Glass()
+                        glass.set_row(i)
+                        glass.set_column(j)
+                        self.put_glass(glass)
+                LOGGER.info("Glass Stack has been setup for use")
+            else:
+                raise ValueError("Glass Stack cannot be setup with the given row settings")
+        except ValueError as v:
+            raise ValueError(v)
+        except TypeError as e:
+            raise TypeError(e)
 
     def pour_water(self):
         pass

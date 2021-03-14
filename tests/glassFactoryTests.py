@@ -32,16 +32,25 @@ class GlassFactoryTests(unittest.TestCase):
 
     def test_setup_glass_stack_returns_the_correct_number_of_glasses(self):
         rows = 6
-        expected_number_Of_glasses = rows * ((rows + 1) / 2)
+        expected_number_Of_glasses = int(rows * ((rows + 1) / 2))
         glass_factory = GlassFactory()
-        glass_factory.setup_glass_stack(rows)
+        glass_factory.set_rows(rows)
+        glass_factory.setup_glass_stack()
         self.assertEqual(len(glass_factory.get_all_glasses()), expected_number_Of_glasses)
 
     def test_setup_glass_stack_returns_error_message_when_cannot_setup_stack(self):
-        rows = 6
+        rows = -6
         glass_factory = GlassFactory()
+        glass_factory.set_rows(rows)
         with self.assertRaises(ValueError):
-            glass_factory.setup_glass_stack(rows)
+            glass_factory.setup_glass_stack()
+
+    def test_setup_glass_stack_with_incorrect_datatype(self):
+        rows = "superman"
+        glass_factory = GlassFactory()
+        glass_factory.set_rows(rows)
+        with self.assertRaises(TypeError):
+            glass_factory.setup_glass_stack()
 
     def test_pour_water_with_negative_volume_returns_error(self):
         poured_volume = -10
