@@ -13,5 +13,9 @@ class AbstractGlassFactory(ABC):
         pass
 
     @abstractmethod
-    def pour_water(self):
+    def pour_water(self, poured_water):
+        pass
+
+    @abstractmethod
+    def find_water_in_glass(self):
         pass
